@@ -18,6 +18,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/user', 'UserController@show');
 
     Route::patch('/user', 'UserController@update');
+    Route::patch('/user/password', 'PasswordController@update');
 });
 
-Route::post('/auth/login', 'LoginController@authenticate')->name('login');
+Route::post('/auth/login', 'AuthController@login')->name('login');
+Route::post('/auth/logout', 'AuthController@logout')->name('logout');

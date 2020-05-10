@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Traits\Auth as TraitsAuth;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class AuthController extends Controller
 {
-    public function authenticate(LoginRequest $request, User $user)
+    use TraitsAuth;
+
+    public function login(LoginRequest $request, User $user)
     {
         $credentials = $request->only('username', 'password');
         if (Auth::guard('web')->attempt($credentials)) {

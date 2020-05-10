@@ -73,7 +73,7 @@ class UserController extends Controller
      */
     public function update(ProfileRequest $request)
     {
-        $user = User::find(Auth::user()->id);
+        $user = Auth::user();
 
         $user->update($request->toArray());
 
