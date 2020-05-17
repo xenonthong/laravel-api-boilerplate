@@ -36,16 +36,16 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'api' => [
-            'driver' => 'passport',
+            'driver' => 'sanctum',
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ]
     ],
 
     /*
@@ -114,4 +114,11 @@ return [
 
     'password_timeout' => 10800,
 
+    /**
+     * Expiration of email verification in minutes
+     */
+    'verification' => [
+        'algo' => env('VERIFICATION_ALGO', 'sha256'),
+        'expire' => env('VERIFICATION_EXPIRY', 1440)
+    ]
 ];

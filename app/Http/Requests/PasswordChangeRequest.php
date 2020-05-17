@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enums\Regex;
+use Illuminate\Support\Facades\Auth;
 
 class PasswordChangeRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class PasswordChangeRequest extends FormRequest
      */
     public function authorize()
     {
-        return \Auth::check();
+        return Auth::check();
     }
 
     /**
@@ -24,8 +26,8 @@ class PasswordChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'current' => 'required|password:api',
-            'new' => 'required|min:8|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'
+            'current' => 'required|password:sanctum',
+            'new' => 'required|min:8|regex:' . Regex::PASSWORD
         ];
     }
 
@@ -35,7 +37,7 @@ class PasswordChangeRequest extends FormRequest
             'current.required' => 'Current password field is required',
             'current.password' => 'Current password does not match our record',
             'new.required' => 'New password field is required',
-            'new.regex' => 'Password does not meet our passpord policy'
+            'new.regex' => 'Password does not meet our password policy'
         ];
     }
 }

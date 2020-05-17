@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordChangeRequest;
 use App\Traits\Auth as TraitsAuth;
-use App\User;
 use Illuminate\Support\Facades\Auth;
 
 class PasswordController extends Controller
@@ -22,7 +22,7 @@ class PasswordController extends Controller
     {
         $update = Auth::user()
                 ->update([
-                    'password' => bcrypt($request->new)
+                    'password' => $request->new
                 ]);
 
         $this->logout();

@@ -5,16 +5,19 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\MustVerifyEmail as TraitsMustVerifyEmail;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
-    use HasApiTokens;
     use HasRoles;
     use SoftDeletes;
+    use TraitsMustVerifyEmail;
+    use HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -52,15 +55,24 @@ class User extends Authenticatable
     protected $with = ['roles:name'];
 
     /**
-     * Find the user instance for the given username.
+     * Mutate password
      *
-     * @param  string  $username
-     * @return \App\User
+     * @param String $password
+     * @return void
      */
-    public function findForPassport($username)
+    public function setPasswordAttribute($password) : void
     {
-        return $this->where('username', $username)
-            ->orWhere('email', $username)
-            ->first();
+        $this->attributes['password'] = Hash::make($password);
+    }
+
+    /**
+     * Mutate username
+     *
+     * @param String $username
+     * @return void
+     */
+    public function setUsernameAttribute($username) : void
+    {
+        $this->attributes['username'] = strtolower($username);
     }
 }

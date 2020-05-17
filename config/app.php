@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Laravel\Passport\PassportServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
 
         /*
@@ -231,5 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
+
+    'frontend' => env('FRONT_END_URL', 'http://localhost'),
 
 ];

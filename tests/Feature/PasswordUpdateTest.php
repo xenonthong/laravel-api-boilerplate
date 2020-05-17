@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Mail;
-use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class PasswordUpdateTest extends TestCase
@@ -23,22 +23,22 @@ class PasswordUpdateTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_update_profile()
+    public function a_user_can_update_password()
     {
-        $this->withExceptionHandling();
+        // $this->withExceptionHandling();
 
         Mail::fake();
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create(['password' => 'password']);
 
-        Passport::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $payload = [
             'current' => 'password',
             'new' => '$5VcDcMCS3Av'
         ];
 
-        $this->patchJson('/api/user/password', $payload)
+        $response = $this->patchJson('/api/user/password', $payload)
             ->assertSuccessful();
 
         Mail::assertSent(PasswordChange::class, function ($mail) use ($user) {
@@ -49,9 +49,9 @@ class PasswordUpdateTest extends TestCase
     /** @test */
     public function a_user_cant_update_using_weak_password()
     {
-         $user = factory(User::class)->create();
+        $user = factory(User::class)->create();
 
-        Passport::actingAs($user);
+        Sanctum::actingAs($user);
 
         $payload = [
             'current' => 'password',

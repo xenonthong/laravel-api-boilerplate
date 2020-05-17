@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Laravel\Passport\Passport;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserGetTest extends TestCase
@@ -24,7 +24,7 @@ class UserGetTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        Passport::actingAs($user);
+        Sanctum::actingAs($user);
 
         $response = $this->getJson('/api/user')
             ->assertSuccessful();
