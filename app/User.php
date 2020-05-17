@@ -10,14 +10,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\MustVerifyEmail as TraitsMustVerifyEmail;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, Auditable
 {
     use Notifiable;
     use HasRoles;
     use SoftDeletes;
     use TraitsMustVerifyEmail;
     use HasApiTokens;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
